@@ -6,16 +6,21 @@ interface WindowState {
   isMaximized: boolean;
   isDragging: boolean;
   isResizing: boolean;
+  resizeStartSize?: { width: number; height: number };
+  resizeStartPosition?: { x: number; y: number };
+  minimumSize: { width: number; height: number };
+  preMaximizePosition?: { x: number; y: number };
+  preMaximizeSize?: { width: number; height: number };
 }
 
 type WindowAction =
+  | { type: "MOVE"; payload: { x: number; y: number } }
+  | { type: "RESIZE"; payload: { width: number; height: number } }
   | { type: "START_DRAG"; payload: { x: number; y: number } }
   | {
       type: "START_RESIZE";
       payload: { x: number; y: number; width: number; height: number };
     }
-  | { type: "MOVE"; payload: { x: number; y: number } }
-  | { type: "RESIZE"; payload: { width: number; height: number } }
   | { type: "END_INTERACTION" }
   | { type: "TOGGLE_MAXIMIZE" };
 
@@ -24,16 +29,6 @@ const windowReducer = (
   action: WindowAction
 ): WindowState => {
   switch (action.type) {
-    case "START_DRAG":
-      return {
-        ...state,
-        isDragging: true,
-      };
-    case "START_RESIZE":
-      return {
-        ...state,
-        isResizing: true,
-      };
     case "MOVE":
       return {
         ...state,
@@ -46,8 +41,26 @@ const windowReducer = (
       return {
         ...state,
         size: {
-          width: Math.max(200, action.payload.width), // Minimum width
-          height: Math.max(100, action.payload.height), // Minimum height
+          width: Math.max(action.payload.width, state.minimumSize.width),
+          height: Math.max(action.payload.height, state.minimumSize.height),
+        },
+      };
+    case "START_DRAG":
+      return {
+        ...state,
+        isDragging: true,
+      };
+    case "START_RESIZE":
+      return {
+        ...state,
+        isResizing: true,
+        resizeStartSize: {
+          width: action.payload.width,
+          height: action.payload.height,
+        },
+        resizeStartPosition: {
+          x: action.payload.x,
+          y: action.payload.y,
         },
       };
     case "END_INTERACTION":
@@ -57,10 +70,23 @@ const windowReducer = (
         isResizing: false,
       };
     case "TOGGLE_MAXIMIZE":
-      return {
-        ...state,
-        isMaximized: !state.isMaximized,
-      };
+      if (state.isMaximized) {
+        // Restore previous position and size
+        return {
+          ...state,
+          isMaximized: false,
+          position: state.preMaximizePosition || state.position,
+          size: state.preMaximizeSize || state.size,
+        };
+      } else {
+        // Save current position and size before maximizing
+        return {
+          ...state,
+          isMaximized: true,
+          preMaximizePosition: { ...state.position },
+          preMaximizeSize: { ...state.size },
+        };
+      }
     default:
       return state;
   }
@@ -69,15 +95,21 @@ const windowReducer = (
 interface UseWindowProps {
   initialSize: { width: number; height: number };
   initialPosition: { x: number; y: number };
+  minimumSize?: { width: number; height: number };
 }
 
-export const useWindow = ({ initialSize, initialPosition }: UseWindowProps) => {
+export const useWindow = ({ 
+  initialSize, 
+  initialPosition, 
+  minimumSize = { width: 200, height: 200 } 
+}: UseWindowProps) => {
   const [state, dispatch] = useReducer(windowReducer, {
     position: initialPosition,
     size: initialSize,
     isMaximized: false,
     isDragging: false,
     isResizing: false,
+    minimumSize,
   });
 
   const interactionStartPos = useRef({ x: 0, y: 0 });
@@ -136,19 +168,23 @@ export const useWindow = ({ initialSize, initialPosition }: UseWindowProps) => {
             y: e.clientY - interactionStartPos.current.y,
           },
         });
-      } else if (state.isResizing) {
+      } else if (state.isResizing && state.resizeStartSize && state.resizeStartPosition) {
+        const deltaX = e.clientX - state.resizeStartPosition.x;
+        const deltaY = e.clientY - state.resizeStartPosition.y;
+        
+        const newWidth = state.resizeStartSize.width + deltaX;
+        const newHeight = state.resizeStartSize.height + deltaY;
+        
         dispatch({
           type: "RESIZE",
           payload: {
-            width:
-              state.size.width + (e.clientX - interactionStartPos.current.x),
-            height:
-              state.size.height + (e.clientY - interactionStartPos.current.y),
+            width: newWidth,
+            height: newHeight,
           },
         });
       }
     },
-    [state.isDragging, state.isResizing, state.size]
+    [state.isDragging, state.isResizing, state.resizeStartSize, state.resizeStartPosition]
   );
 
   const handleMouseUp = useCallback(() => {
