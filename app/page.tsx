@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import Window from "../components/Window";
+import Window from "../components/Window/Window";
 import { Button } from "../components/Button";
-
+import Image from "next/image";
 export default function Home() {
   const [windows, setWindows] = useState([
     { id: 1, title: "Welcome", isOpen: true },
@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <div 
-      className="fixed inset-0 overflow-hidden"
+      className="h-full overflow-hidden"
       style={{
         backgroundImage: "url('/wallpaper/MacOSTub.png')",
         backgroundSize: "cover",
@@ -31,31 +31,21 @@ export default function Home() {
         {windows.map((window, index) => (
           <button
             key={window.id}
-            onClick={() => openWindow(window.id)}
+            onDoubleClick={() => openWindow(window.id)}
             className="flex flex-col items-center gap-1 w-16 text-center"
           >
-            <div className="w-12 h-12 bg-white/80 rounded shadow" />
-            <span className="text-xs text-white shadow-sm">{window.title}</span>
+            <Image src="/icons/itunes.png" alt="itunes" width={60} height={60} />
+            <span className="text-xs bg-gray-100/70 p-0.5 min-w-12">{window.title}</span>
           </button>
         ))}
       </div>
-
-      {/* Test Buttons */}
-      <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
-        <Button>Regular Button</Button>
-        <Button>Default Button</Button>
-        <Button shape="square">□</Button>
-        <Button size="small">Small</Button>
-        <Button disabled>Disabled</Button>
-      </div>
-
       {/* Windows */}
       {windows.map(
         (window, index) =>
           window.isOpen && (
-            <Window key={window.id} title={window.title}>
+            <Window key={window.id} title={window.title} onClose={() => closeWindow(window.id)}>
               {window.id === 1 ? (
-                <div className="space-y-4">
+                <div className="space-y-4 p-4">
                   <h1 className="text-xl font-bold">
                     Welcome to MacOS 9 Style
                   </h1>

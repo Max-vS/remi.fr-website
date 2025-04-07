@@ -1,15 +1,43 @@
 @import "tailwindcss";
+@import "./assets.css";
+@import './fonts.css';
 
 :root {
-  --background: #9DB8C3;
-  --foreground: #000000;
+  --font-chicago: 'ChicagoFLF', system-ui, -apple-system, sans-serif;
+  --font-charcoal: 'Charcoal', system-ui, -apple-system, sans-serif;
+  --font-geneva: 'Geneva', system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-charcoal);
+}
+
+.icon-maximize {
+  background-image: var(--maximize);
+  opacity: 0.65;
+  background-position: left top;
+}
+
+.icon-resizer {
+  background-image: var(--resizer);
+}
+
+.icon-titlebar-center {
+  background-image: var(--title-bar-center);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-charcoal);
   --font-mono: var(--font-geist-mono);
+  --font-chicago: var(--font-chicago);
+  --font-charcoal: var(--font-charcoal);
+  --font-geneva: var(--font-geneva);
+  --color-system-1: #EEEEEE;
+  --color-system-2: #DDDDDD;
+  --color-system-3: #CCCCCC;
+  --color-system-4: #AAAAAA;
+  --color-system-5: #808080;
+  --color-system-6: #393939;
+  --color-system-7: #202020;
+  --color-outline-1: #6666CC;
+  --color-theme-4: #6666CC;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,15 +50,18 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Chicago", "Geneva", system-ui, -apple-system, sans-serif;
+  font-family: var(--font-charcoal);
   overflow: hidden;
   cursor: default;
   user-select: none;
 }
 
-@font-face {
-  font-family: 'Chicago';
-  src: url('/fonts/ChicagoFLF.ttf') format('truetype');
+.text-blinker {
+  animation: blinker 2s steps(1, end) infinite;
 }
 
-/* Add more retro styling as needed */
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
