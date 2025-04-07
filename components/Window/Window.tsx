@@ -85,13 +85,13 @@ function Window({
     >
       {/* Title Bar */}
       <div
-        className="relative flex flex-row h-4 pb-1.5 text-center border-none shadow-none gap-1.5"
+        className="relative flex flex-row items-center h-4 pb-1.5 my-0.5 text-center border-none shadow-none gap-1.5"
         onMouseDown={handleMouseDown}
       >
         {/* Close Button */}
         {closable && (
           <WindowControlBox onClick={onClose}>
-            <X className="h-2.5 w-2.5" strokeWidth={4} />
+            <X className="h-3 w-3" strokeWidth={3.5} />
           </WindowControlBox>
         )}
 
@@ -112,7 +112,7 @@ function Window({
                   />
                 </div>
               )}
-              <div className="text-sm text-center font-black px-3 overflow-hidden !h-6 select-none">
+              <div className="text-sm font-black px-3 overflow-hidden select-none text-center">
                 {title}
               </div>
               <TitleBarSide />
@@ -125,11 +125,7 @@ function Window({
         {/* Maximize Button */}
         {maximizable && (
           <WindowControlBox onClick={toggleMaximize}>
-            {isMaximized ? (
-              <Maximize className="h-2.5 w-2.5" strokeWidth={4} />
-            ) : (
-              <Plus className="h-2.5 w-2.5" strokeWidth={4} />
-            )}
+            <Maximize2 className="h-2.5 w-2.5" strokeWidth={4} />
           </WindowControlBox>
         )}
       </div>
@@ -145,7 +141,7 @@ function Window({
           scrollable ? "" : "!overflow-hidden",
           modal
             ? "w-[calc(100%-3px)] h-[calc(100%-30px)] m-0 p-[1.5px] border-0 border-t-[1.5px] border-t-black bg-system-3 shadow-[inset_-1px_-1px_#808080,inset_1px_1px_white,1px_1px_0_0_black]"
-            : "relative block overflow-auto bg-white h-[calc(100%-18px)] border border-black shadow-[-1px_-1px_#808080,1px_1px_white]",
+            : "relative block overflow-auto bg-white h-[calc(100%-20px)] border border-black shadow-[-1px_-1px_#808080,1px_1px_white]",
           header ? "relative block overflow-auto h-[calc(100%-48px)]" : ""
         )}
       >

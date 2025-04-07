@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <div 
-      className="fixed inset-0 overflow-hidden"
+      className="h-full overflow-hidden"
       style={{
         backgroundImage: "url('/wallpaper/MacOSTub.png')",
         backgroundSize: "cover",
@@ -35,20 +35,10 @@ export default function Home() {
             className="flex flex-col items-center gap-1 w-16 text-center"
           >
             <Image src="/icons/itunes.png" alt="itunes" width={60} height={60} />
-            <span className="text-xs bg-gray-100/70 p-0.5 min-w-12 font-semibold">{window.title}</span>
+            <span className="text-xs bg-gray-100/70 p-0.5 min-w-12">{window.title}</span>
           </button>
         ))}
       </div>
-
-      {/* Test Buttons */}
-      <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
-        <Button>Regular Button</Button>
-        <Button>Default Button</Button>
-        <Button shape="square">□</Button>
-        <Button size="small">Small</Button>
-        <Button disabled>Disabled</Button>
-      </div>
-
       {/* Windows */}
       {windows.map(
         (window, index) =>
