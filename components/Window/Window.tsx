@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 import { useWindow } from "../../hooks/useWindow";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import TitleBarSide from "./WindowTitleBarSide";
 import WindowControlBox from "./WindowControlBox";
-import { Maximize, Maximize2, Plus, X } from "lucide-react";
+import { Maximize2, X } from "lucide-react";
 
 interface WindowProps {
   title?: string;
-  icon?: string;
   closable?: boolean;
   maximizable?: boolean;
   resizable?: boolean;
@@ -24,7 +22,6 @@ interface WindowProps {
 
 function Window({
   title = "",
-  icon = "",
   closable = true,
   maximizable = true,
   resizable = true,
@@ -70,7 +67,7 @@ function Window({
       className={cn(
         "absolute z-20 max-w-screen max-h-screen p-1.5 bg-system-3 border border-black shadow-[inset_-1px_-1px_#808080,inset_1px_1px_#FFFFFF,1px_1px_0_0_#000000]",
         modal ? "m-0 p-0" : "",
-        isMaximized ? "!fixed inset-0 !m-0" : ""
+        isMaximized ? "!fixed !top-0 !left-0 !right-0 !bottom-0 !w-auto !h-auto !m-10 !mt-12 !mr-30" : ""
       )}
       style={
         !isMaximized
@@ -80,7 +77,7 @@ function Window({
               left: position.x,
               top: position.y,
             }
-          : { width: "100%", height: "100%" }
+          : undefined
       }
     >
       {/* Title Bar */}
@@ -100,19 +97,7 @@ function Window({
           {title !== "" ? (
             <>
               <TitleBarSide />
-              {icon && (
-                <div className="max-w-6 max-h-6 px-1.5 py-0 relative h-full">
-                  <Image
-                    src={icon}
-                    alt={title}
-                    fill
-                    sizes="24px"
-                    className="select-none pointer-events-none object-contain"
-                    priority={false}
-                  />
-                </div>
-              )}
-              <div className="text-sm font-black px-3 overflow-hidden select-none text-center">
+              <div className="text-sm font-black px-2 overflow-hidden select-none text-center">
                 {title}
               </div>
               <TitleBarSide />
@@ -130,7 +115,7 @@ function Window({
         )}
       </div>
       {header && (
-        <div className="sticky z-50 top-0 flex flex-row items-center justify-center border border-system-7 border-b-system-5 shadow-[inset_-1px_-1px_system-5,inset_1px_1px_white,1px_1px_0_0_black]">
+        <div className="sticky z-50 top-0 flex flex-row items-center justify-center border border-system-7 border-b-system-5 shadow-[-1px_-1px_#808080,inset_1px_1px_white]">
           {header}
         </div>
       )}
