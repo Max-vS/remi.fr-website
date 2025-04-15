@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import NavigationBar from "@/components/Navigation/NavigationBar";
+import { WallpaperProvider } from "@/hooks/useWallpaper";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,9 +16,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <Script src="https://sdk.scdn.co/spotify-player.js" />
+      </head>
       <body className="antialiased flex flex-col h-screen">
-        <NavigationBar />
-        <main className="flex-1 overflow-hidden">{children}</main>
+        <WallpaperProvider>
+          <NavigationBar />
+          <main className="flex-1 overflow-hidden">{children}</main>
+        </WallpaperProvider>
       </body>
     </html>
   );

@@ -6,6 +6,7 @@
   --font-chicago: 'ChicagoFLF', system-ui, -apple-system, sans-serif;
   --font-charcoal: 'Charcoal', system-ui, -apple-system, sans-serif;
   --font-geneva: 'Geneva', system-ui, -apple-system, sans-serif;
+  --font-garamond: 'AppleGaramond', system-ui, -apple-system, sans-serif;
   --font-sans: var(--font-charcoal);
 }
 
@@ -29,6 +30,7 @@
   --font-chicago: var(--font-chicago);
   --font-charcoal: var(--font-charcoal);
   --font-geneva: var(--font-geneva);
+  --font-garamond: var(--font-garamond);
   --color-system-1: #EEEEEE;
   --color-system-2: #DDDDDD;
   --color-system-3: #CCCCCC;
@@ -40,16 +42,7 @@
   --color-theme-4: #6666CC;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: var(--font-charcoal);
   overflow: hidden;
   cursor: default;
