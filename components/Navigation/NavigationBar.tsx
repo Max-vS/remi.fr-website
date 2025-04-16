@@ -46,7 +46,7 @@ const NavigationBar = () => {
           <div className="float-right flex items-center">
             <TimeWidget />
             <LanguageWidget />
-          <WallpaperWidget />
+            <WallpaperWidget />
           </div>
         </ul>
       </div>
