@@ -1,27 +1,14 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import React from "react";
 import Window from "../components/Window/Window";
 import Image from "next/image";
-import { useWallpaper } from "@/hooks/useWallpaper";
+import { useAppStore } from "@/lib/appStore";
 import { Clippy } from "clippy-react";
 import { appWindows } from "@/data/WindowConfig";
 
 export default function Home() {
-  // State für geöffnete Fenster
-  const [openWindows, setOpenWindows] = useState<number[]>([1]); // App 1 ist initial geöffnet
-
-  const openWindow = (id: number) => {
-    if (!openWindows.includes(id)) {
-      setOpenWindows([...openWindows, id]);
-    }
-  };
-
-  const closeWindow = (id: number) => {
-    setOpenWindows(openWindows.filter((windowId) => windowId !== id));
-  };
-
-  const { currentWallpaper } = useWallpaper();
+  const { openWindows, openWindow, closeWindow, currentWallpaper } = useAppStore();
 
   const clippy = useRef<Clippy>(null);
 
@@ -80,6 +67,7 @@ export default function Home() {
             initialSize={app.initialSize}
             header={app.header}
             onClose={() => closeWindow(app.id)}
+            resizable={app.resizable}
           >
             {app.windowContent}
           </Window>

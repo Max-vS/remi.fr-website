@@ -1,9 +1,14 @@
 import { useState } from "react";
 import NavigationItem from "./NavigationItem";
 import LanguageMenu from "./LanguageMenu";
+import { useAppStore } from "@/lib/appStore";
 
 const LanguageWidget = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { languages, currentLanguage } = useAppStore();
+
+  const currentLanguageTitle =
+    languages.find((lang) => lang.code === currentLanguage)?.title || "English";
 
   return (
     <div
@@ -11,10 +16,7 @@ const LanguageWidget = () => {
       onMouseEnter={() => setIsMenuOpen(true)}
       onMouseLeave={() => setIsMenuOpen(false)}
     >
-      <NavigationItem
-        title="English"
-        image="/icons/world1.png"
-      />
+      <NavigationItem title={currentLanguageTitle} image="/icons/world1.png" />
       {isMenuOpen && <LanguageMenu />}
     </div>
   );
