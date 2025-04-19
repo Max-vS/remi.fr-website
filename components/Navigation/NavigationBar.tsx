@@ -4,24 +4,21 @@ import Image from "next/image";
 import TimeWidget from "./TimeWidget";
 import LanguageWidget from "./LanguageWidget";
 import WallpaperWidget from "./WallpaperWidget";
-import NavigationItem, { NavigationItemType } from "./NavigationItem";
-
-const navigationItems: NavigationItemType[] = [
-  {
-    title: "Music",
-    href: "/",
-  },
-  {
-    title: "Tour",
-    href: "/",
-  },
-  {
-    title: "Contact",
-    href: "/",
-  },
-];
+import NavigationItem from "./NavigationItem";
+import { useCallback } from "react";
+import { useAppStore } from "@/lib/appStore";
+import { appWindows } from "@/data/WindowConfig";
 
 const NavigationBar = () => {
+  const { openWindow } = useAppStore();
+
+  const handleItemClick = useCallback(
+    (windowId: number) => {
+      openWindow(windowId);
+    },
+    [openWindow]
+  );
+
   return (
     <nav className="z-[500] bg-black">
       <div className="relative z-[5000] flex w-full m-0 p-0 shadow-[inset_1px_1px_0_0_#808080,2px_2px_0_0_0]">
@@ -35,14 +32,16 @@ const NavigationBar = () => {
             />
           </li>
 
-          {navigationItems.map((item: NavigationItemType) => (
-            <NavigationItem
-              key={item.title}
-              title={item.title}
-              href={item.href}
-              className="float-left"
-            />
-          ))}
+          {appWindows
+            .filter((app) => app.showInNavbar)
+            .map((app) => (
+              <NavigationItem
+                key={app.id}
+                title={app.title}
+                className="float-left cursor-pointer"
+                onClick={() => handleItemClick(app.id)}
+              />
+            ))}
           <div className="float-right flex items-center">
             <TimeWidget />
             <LanguageWidget />

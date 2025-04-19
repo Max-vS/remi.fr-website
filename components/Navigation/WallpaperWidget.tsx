@@ -1,11 +1,11 @@
 import { useState } from "react";
 import NavigationItem from "./NavigationItem";
 import WallpaperMenu from "./WallpaperMenu";
-import { useWallpaper } from "@/hooks/useWallpaper";
+import { useAppStore } from "@/lib/appStore";
 
 const WallpaperWidget = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { setWallpaper } = useWallpaper();
+  const { setWallpaper } = useAppStore();
 
   const handleWallpaperChange = (imagePath: string) => {
     setWallpaper(imagePath);

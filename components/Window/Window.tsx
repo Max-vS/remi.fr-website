@@ -67,7 +67,9 @@ function Window({
       className={cn(
         "absolute z-20 max-w-screen max-h-screen p-1.5 bg-system-3 border border-black shadow-[inset_-1px_-1px_#808080,inset_1px_1px_#FFFFFF,1px_1px_0_0_#000000]",
         modal ? "m-0 p-0" : "",
-        isMaximized ? "!fixed !top-0 !left-0 !right-0 !bottom-0 !w-auto !h-auto !m-10 !mt-12 !mr-30" : ""
+        isMaximized
+          ? "!fixed !top-0 !left-0 !right-0 !bottom-0 !w-auto !h-auto !m-6 !mt-12 !mr-30"
+          : ""
       )}
       style={
         !isMaximized

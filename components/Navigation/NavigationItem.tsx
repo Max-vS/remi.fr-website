@@ -7,6 +7,7 @@ export interface NavigationItemType extends HTMLAttributes<HTMLLIElement> {
   title: string;
   image?: string;
   href?: string;
+  windowId?: number;
 }
 
 const NavigationItem = ({ title, image, href, className, ...props }: NavigationItemType) => {
